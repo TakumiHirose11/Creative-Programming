@@ -1,0 +1,32 @@
+# coding: "utf-8"
+Root:
+
+<Root>:
+    canvas.before:
+        Color:
+            rgb: 0,0,0
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+<Title@BoxLayout>:
+    orientation: 'vertical'
+    Label:
+        text:'3D Yonmoku'
+        font_size: 120
+        color: 1,1,1,1
+    Switch:
+        id: "first-move-check"
+        text:'First move'
+    Button:
+        text: "play"
+        on_press:
+            app.root.gotoBoard()
+
+<Board>:
+    Label:
+        text: "success!"
+    Button:
+        text: "back"
+        on_press:
+            app.root.gotoTitle()
