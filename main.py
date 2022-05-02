@@ -1,4 +1,3 @@
-from turtle import title
 from kivy.app import App
 from kivy.factory import Factory
 from kivy.uix.boxlayout import BoxLayout
