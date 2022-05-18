@@ -11,7 +11,7 @@ from pathlib import Path
 import numpy as np
 
 # パラメータの準備
-PV_EVALUATE_COUNT = 50 # 1推論あたりのシミュレーション回数（本家は1600）
+PV_EVALUATE_COUNT = 25 # 1推論あたりのシミュレーション回数（本家は1600）50
 
 # 推論
 def predict(model, state):
@@ -36,7 +36,6 @@ def predict(model, state):
 
     # 方策の取得
     policies = y[0][0][list(state.legal_actions())] # 合法手のみ
-    print("policies: ",policies)
     policies /= sum(policies) if sum(policies) else 1 # 合計1の確率分布に変換
 
     # 価値の取得

@@ -12,7 +12,7 @@ import numpy as np
 import pickle
 
 # パラメータの準備
-RN_EPOCHS = 100 # 学習回数
+RN_EPOCHS = 50 # 学習回数100
 
 # 学習データの読み込み
 def load_data():
@@ -27,9 +27,12 @@ def train_network():
     xs, y_policies, y_values = zip(*history)
 
     # 学習のための入力データのシェイプの変換
-    a, b, c = DN_INPUT_SHAPE
+    #a, b, c = DN_INPUT_SHAPE
     xs = np.array(xs)
-    xs = xs.reshape(len(xs), c, a, b).transpose(0, 2, 3, 1)
+    xs = xs.reshape(len(xs), 2, 4, 4, 4)
+
+    #print(xs[0])
+
     y_policies = np.array(y_policies)
     y_values = np.array(y_values)
 
