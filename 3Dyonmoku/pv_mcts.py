@@ -19,15 +19,17 @@ def predict(model, state):
     #a, b, c, d = DN_INPUT_SHAPE
     #print(a,b,c,d)
     x = np.array([state.pieces, state.enemy_pieces])
-    print(x)
-    print(x.shape)
+    #print(x)
+    #print(x.shape)
     x = x.reshape(2, 4, 4, 4).reshape(1, 2, 4, 4, 4)
 
     #check
+    """
     print("------------------------")
     print("data shape: ",x.ndim)
     print("data shape: ",x.shape)
     print(x)
+    """
 
     # 推論
     y = model.predict(x, batch_size=1)
@@ -40,7 +42,7 @@ def predict(model, state):
     # 価値の取得
     value = y[1][0][0]
 
-    print("Hello -----------------------")
+    #print("Hello -----------------------")
     return policies, value
 
 # ノードのリストを試行回数のリストに変換
@@ -152,7 +154,7 @@ state = State()
 predict(model,state)
 
 
-"""
+
 # 動作確認
 if __name__ == '__main__':
     # モデルの読み込み
@@ -179,4 +181,3 @@ if __name__ == '__main__':
 
         # 文字列表示
         print(state)
-"""
