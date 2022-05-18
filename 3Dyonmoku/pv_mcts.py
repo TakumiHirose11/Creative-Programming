@@ -33,7 +33,7 @@ def predict(model, state):
     y = model.predict(x, batch_size=1)
 
     # 方策の取得
-    policies = y[0][0][0][list(state.legal_actions())] # 合法手のみ
+    policies = y[0][0][list(state.legal_actions())] # 合法手のみ
     print("policies: ",policies)
     policies /= sum(policies) if sum(policies) else 1 # 合計1の確率分布に変換
 
