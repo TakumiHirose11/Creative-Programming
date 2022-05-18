@@ -12,12 +12,12 @@ import os
 # パラメータの準備
 DN_FILTERS  = 128 # 畳み込み層のカーネル数（本家は256）
 DN_RESIDUAL_NUM =  16 # 残差ブロックの数（本家は19）
-DN_INPUT_SHAPE = (4, 4, 3, 2) # 入力シェイプ
-DN_OUTPUT_SIZE = 16**64 # 行動数(配置先(3*3))
+DN_INPUT_SHAPE = (2, 4, 4, 4) # 入力シェイプ
+DN_OUTPUT_SIZE = 64 # 行動数
 
 # 畳み込み層の作成
 def conv(filters):
-    return Conv3D(filters, 4, padding='same', use_bias=False,
+    return Conv3D(filters, 3, padding='same', use_bias=False,
         kernel_initializer='he_normal', kernel_regularizer=l2(0.0005))
 
 # 残差ブロックの作成
@@ -42,6 +42,8 @@ def dual_network():
 
     # 入力層
     input = Input(shape=DN_INPUT_SHAPE)
+    
+    # print(input.shape)
 
     # 畳み込み層
     x = conv(DN_FILTERS)(input)

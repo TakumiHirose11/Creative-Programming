@@ -16,19 +16,31 @@ PV_EVALUATE_COUNT = 50 # 1推論あたりのシミュレーション回数（本
 # 推論
 def predict(model, state):
     # 推論のための入力データのシェイプの変換
-    a, b, c = DN_INPUT_SHAPE
+    #a, b, c, d = DN_INPUT_SHAPE
+    #print(a,b,c,d)
     x = np.array([state.pieces, state.enemy_pieces])
-    x = x.reshape(c, a, b).transpose(1, 2, 0).reshape(1, a, b, c)
+    print(x)
+    print(x.shape)
+    x = x.reshape(2, 4, 4, 4).reshape(1, 2, 4, 4, 4)
+
+    #check
+    print("------------------------")
+    print("data shape: ",x.ndim)
+    print("data shape: ",x.shape)
+    print(x)
 
     # 推論
     y = model.predict(x, batch_size=1)
 
     # 方策の取得
-    policies = y[0][0][list(state.legal_actions())] # 合法手のみ
+    policies = y[0][0][0][list(state.legal_actions())] # 合法手のみ
+    print("policies: ",policies)
     policies /= sum(policies) if sum(policies) else 1 # 合計1の確率分布に変換
 
     # 価値の取得
     value = y[1][0][0]
+
+    print("Hello -----------------------")
     return policies, value
 
 # ノードのリストを試行回数のリストに変換
@@ -129,6 +141,18 @@ def boltzman(xs, temperature):
     xs = [x ** (1 / temperature) for x in xs]
     return [x / sum(xs) for x in xs]
 
+
+# モデルの読み込み
+path = sorted(Path('./model').glob('*.h5'))[-1]
+model = load_model(str(path))
+
+# 状態の生成
+state = State()
+
+predict(model,state)
+
+
+"""
 # 動作確認
 if __name__ == '__main__':
     # モデルの読み込み
@@ -155,3 +179,4 @@ if __name__ == '__main__':
 
         # 文字列表示
         print(state)
+"""
