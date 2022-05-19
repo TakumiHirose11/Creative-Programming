@@ -18,7 +18,7 @@ class GameUI(tk.Frame):
     # 初期化
     def __init__(self, master=None, model=None):
         tk.Frame.__init__(self, master)
-        self.master.title('三目並べ')
+        self.master.title('立体四目並べ')
 
         # ゲーム状態の生成
         self.state = State()

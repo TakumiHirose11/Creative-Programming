@@ -19,25 +19,25 @@ class State:
     def is_lose(self):
         def is_comp(x,y,z,dx,dy,dz):
             for k in range(4):
-                if y<0 or 3<y or x<0 or 3<x or self.enemy_pieces[x + y*4 + z*16]==0:
+                if y<0 or 3<y or x<0 or 3<x or z<0 or z>3 or self.enemy_pieces[x + y*4 + z*16]==0:
                     return False
                 x,y,z=x+dx,y+dy,z+dz
             return True
         
-        #平面縦と横
+        #平面縦と横(x方向のみ、またはy方向のみ)
         for i in range(4):
-            #高さで三つ
-            for z in range(3):
+            #高さで4つ
+            for z in range(4):
                 if is_comp(i,0,z,0,1,0) or is_comp(0,i,z,1,0,0):
                     return True
         
-        #平面斜め
-        for z in range(3):
+        #平面斜め（x,y方向）
+        for z in range(4):
             if is_comp(0,0,z,1,1,0) or is_comp(0,3,z,1,-1,0):
                 return True
             
         #立体縦と横
-        for x in range(4):
+        for i in range(4):
             if is_comp(i,0,0,0,1,1) or is_comp(i,3,0,0,-1,1) or is_comp(0,i,0,1,0,1) or is_comp(3,i,0,-1,0,1):
                 return True 
 
@@ -45,6 +45,12 @@ class State:
         if is_comp(0,0,0,1,1,1) or is_comp(3,3,0,-1,-1,1) or is_comp(0,3,0,1,-1,1) or is_comp(3,0,0,-1,1,1):
             return True
 
+        #立体高さ（z方向のみ）
+        for x in range(4):
+            for y in range(4):
+                if is_comp(x, y, 0, 0, 0, 1):
+                    return True
+            
         return False
 
 
@@ -74,6 +80,9 @@ class State:
                  else:
                     if self.pieces[i+32] == 0 and self.enemy_pieces[i+32] == 0:
                         actions.append(i+32)
+                    else:
+                        if self.pieces[i+48] == 0 and self.enemy_pieces[i+48] == 0:
+                            actions.append(i+48)
         return actions
 
     # 先手かどうか
@@ -252,16 +261,35 @@ def mcts_action(state):
 if __name__ == '__main__':
     # 状態の生成
     state = State()
+    print()
     print("Game Start!! ----------------------------------------------------------------")
     # ゲーム終了までのループ
+
+    i=0
     while True:
         # ゲーム終了時
+        print(state)
         if state.is_done():
             break
-
+        if i%2 == 0:
+            legal_actions = state.legal_actions()
+            print("x→  y↓")
+            x= int(input("enter x!"))
+            y= int(input("enter y!"))
+            z= int(input("enter z!"))
+            if not x+y*4+z*16 in legal_actions:
+                print()
+                print("This move is not legal.")
+                print()
+                continue
+            state = state.next(x+y*4+z*16)
+            
+        else:
+            state = state.next(random_action(state))
         # 次の状態の取得
-        state = state.next(random_action(state))
+        #state = state.next(random_action(state))
 
         # 文字列表示
-        print(state)
-        print()
+       
+        print("--------------------------------------------")
+        i+=1
