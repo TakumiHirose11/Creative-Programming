@@ -12,7 +12,7 @@ from evaluate_best_player import evaluate_best_player
 # デュアルネットワークの作成
 dual_network()
 
-for i in range(5):
+for i in range(10):
     print('Train',i,'====================')
     # セルフプレイ部
     self_play()

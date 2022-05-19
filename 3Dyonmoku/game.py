@@ -1,5 +1,3 @@
-
-
 # パッケージのインポート
 import random
 import math
@@ -261,11 +259,10 @@ def mcts_action(state):
 
 
 def vs_human():
-     # 状態の生成
     state = State()
+
     print()
     print("Game Start!!")
-    # ゲーム終了までのループ
 
     i=0
     while True:
@@ -287,11 +284,7 @@ def vs_human():
             
         else:
             state = state.next(random_action(state))
-        # 次の状態の取得
-        #state = state.next(random_action(state))
 
-        # 文字列表示
-       
         print("--------------------------------------------")
         i+=1
 
@@ -334,4 +327,4 @@ def check_rule():
 # 動作確認
 if __name__ == '__main__':
     #vs_human()
-    check_rule()
+    vs_human()
