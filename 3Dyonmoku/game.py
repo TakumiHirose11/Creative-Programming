@@ -257,17 +257,18 @@ def mcts_action(state):
         n_list.append(c.n)
     return legal_actions[argmax(n_list)]
 
-# 動作確認
-if __name__ == '__main__':
-    # 状態の生成
+
+
+
+def vs_human():
+     # 状態の生成
     state = State()
     print()
-    print("Game Start!! ----------------------------------------------------------------")
+    print("Game Start!!")
     # ゲーム終了までのループ
 
     i=0
     while True:
-        # ゲーム終了時
         print(state)
         if state.is_done():
             break
@@ -293,3 +294,44 @@ if __name__ == '__main__':
        
         print("--------------------------------------------")
         i+=1
+
+def check_rule():
+    state = State()
+    print()
+    print("Game Start!!")
+    # ゲーム終了までのループ
+
+    i=0
+    while True:
+        print(state)
+        if state.is_done():
+            break
+        if i%2 == 0:
+            legal_actions = state.legal_actions()
+            print("x→  y↓")
+            x= int(input("enter x!"))
+            y= int(input("enter y!"))
+            z= int(input("enter z!"))
+            
+            if not x+y*4+z*16 in legal_actions:
+                print()
+                print("This move is not legal.")
+                print()
+                continue
+            state = state.next(x+y*4+z*16)
+            
+        else:
+            state = state.next(random_action(state))
+            state.enemy_pieces = [0]*64
+        # 次の状態の取得
+        #state = state.next(random_action(state))
+
+        # 文字列表示
+       
+        print("--------------------------------------------")
+        i+=1
+
+# 動作確認
+if __name__ == '__main__':
+    #vs_human()
+    check_rule()
