@@ -53,25 +53,29 @@ class GameUI(tk.Frame):
 
         if event.x < 320:
             z = 0
-            x = event.x / 80
+            x = int(event.x / 80)
         elif event.x>360 and event.x<680:
             z = 1
-            x = (event.x-360)/80
+            x = int((event.x-360)/80)
         elif event.x>720 and event.x<1040:
             z = 2
-            x = (event.x-720)/80
+            x = int((event.x-720)/80)
         else:
             z = 3
-            x = (event.x-1080)/80
+            x = int((event.x-1080)/80)
 
-
-        y = event.y / 80
-        action = x + y*4 + z*16
+        if x<0 or x>3 or y<0 or y>3:
+            return
+        y = int(event.y / 80)
+        action = x + int(y*4) + int(z*16)
 
         # 合法手でない時
+        print(self.state.legal_actions())
+        print(x,y,z)
         if not (action in self.state.legal_actions()):
             return
 
+        print("OK!")
         # 次の状態の取得
         self.state = self.state.next(action)
         self.on_draw()
