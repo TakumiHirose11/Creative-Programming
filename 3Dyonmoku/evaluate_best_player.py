@@ -73,8 +73,8 @@ def evaluate_best_player():
     evaluate_algorithm_of('VS_Random', next_actions)
 
     # VSアルファベータ法
-    next_actions = (next_pv_mcts_action, alpha_beta_action)
-    evaluate_algorithm_of('VS_AlphaBeta', next_actions)
+    #next_actions = (next_pv_mcts_action, alpha_beta_action)
+    #evaluate_algorithm_of('VS_AlphaBeta', next_actions)
 
     # VSモンテカルロ木探索
     next_actions = (next_pv_mcts_action, mcts_action)

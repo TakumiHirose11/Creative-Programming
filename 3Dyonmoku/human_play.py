@@ -27,7 +27,7 @@ class GameUI(tk.Frame):
         self.next_action = pv_mcts_action(model, 0.0)
 
         # キャンバスの生成
-        self.c = tk.Canvas(self, width = 240, height = 240, highlightthickness = 0)
+        self.c = tk.Canvas(self, width = 1400, height = 320, highlightthickness = 0)
         self.c.bind('<Button-1>', self.turn_of_human)
         self.c.pack()
 
@@ -36,6 +36,7 @@ class GameUI(tk.Frame):
 
     # 人間のターン
     def turn_of_human(self, event):
+        print("turn of human")
         # ゲーム終了時
         if self.state.is_done():
             self.state = State()
@@ -46,12 +47,26 @@ class GameUI(tk.Frame):
         if not self.state.is_first_player():
             return
 
-        # クリック位置を行動に変換
-        x = int(event.x/80)
-        y = int(event.y/80)
-        if x < 0 or 2 < x or y < 0 or 2 < y: # 範囲外
-            return
-        action = x + y * 3
+        x=0
+        y=0
+        z=0
+
+        if event.x < 320:
+            z = 0
+            x = event.x / 80
+        elif event.x>360 and event.x<680:
+            z = 1
+            x = (event.x-360)/80
+        elif event.x>720 and event.x<1040:
+            z = 2
+            x = (event.x-720)/80
+        else:
+            z = 3
+            x = (event.x-1080)/80
+
+
+        y = event.y / 80
+        action = x + y*4 + z*16
 
         # 合法手でない時
         if not (action in self.state.legal_actions()):
@@ -66,6 +81,8 @@ class GameUI(tk.Frame):
 
     # AIのターン
     def turn_of_ai(self):
+        print("turn of ai")
+
         # ゲーム終了時
         if self.state.is_done():
             return
@@ -79,23 +96,44 @@ class GameUI(tk.Frame):
 
     # 石の描画
     def draw_piece(self, index, first_player):
-        x = (index%3)*80+10
-        y = int(index/3)*80+10
-        if first_player:
-            self.c.create_oval(x, y, x+60, y+60, width = 2.0, outline = '#FFFFFF')
+        ps = 0
+        if index < 16:
+            ps=0
+        elif index < 32:
+            ps=360
+        elif index < 48:
+            ps=720
         else:
-            self.c.create_line(x, y, x+60, y+60, width = 2.0, fill = '#5D5D5D')
-            self.c.create_line(x+60, y, x, y+60, width = 2.0, fill = '#5D5D5D')
+            ps=1080
+
+
+        x = ps + 80 * int(index%16)%4 +10
+        y = int((index%16)/4)*80+10
+        if first_player:
+            self.c.create_oval(x, y, x+60, y+60, width = 2.0, outline = '#FFFFFF', fill='#FFFFFF')
+        else:
+            self.c.create_oval(x, y, x+60, y+60, width = 2.0, outline = '#000000', fill='#000000')
+
+
 
     # 描画の更新
     def on_draw(self):
         self.c.delete('all')
-        self.c.create_rectangle(0, 0, 240, 240, width = 0.0, fill = '#00A0FF')
-        self.c.create_line(80, 0, 80, 240, width = 2.0, fill = '#0077BB')
-        self.c.create_line(160, 0, 160, 240, width = 2.0, fill = '#0077BB')
-        self.c.create_line(0, 80, 240, 80,  width = 2.0, fill = '#0077BB')
-        self.c.create_line(0, 160, 240, 160, width = 2.0, fill = '#0077BB')
-        for i in range(9):
+        self.c.create_rectangle(0, 0, 1400, 320, width = 0.0, fill = '#00A0FF', outline = '#0077BB')
+
+        def draw_line(ps):
+            for i in range(5):
+                self.c.create_line(ps+80*i, 0, ps+80*i, 320, width = 2.0, fill = '#0077BB')
+            for i in range(5):
+                self.c.create_line(ps, 80*i, ps+320, 80*i, width = 2.0, fill = '#0077BB')
+        
+        draw_line(0)
+        draw_line(360)
+        draw_line(720)
+        draw_line(1080)
+
+                
+        for i in range(64):
             if self.state.pieces[i] == 1:
                 self.draw_piece(i, self.state.is_first_player())
             if self.state.enemy_pieces[i] == 1:
