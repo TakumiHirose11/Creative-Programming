@@ -3,7 +3,7 @@
 # ====================
 
 # パッケージのインポート
-from game import State, random_action, alpha_beta_action, mcts_action
+from game import State, random_action, mcts_action
 from pv_mcts import pv_mcts_action
 from tensorflow.keras.models import load_model
 from tensorflow.keras import backend as K
