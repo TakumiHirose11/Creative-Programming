@@ -1,1 +1,4 @@
 venv/*
+model/*
+archive/*
+bad_archive/*
