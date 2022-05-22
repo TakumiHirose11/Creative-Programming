@@ -31,6 +31,7 @@ def play(next_actions):
     while True:
         # ゲーム終了時
         if state.is_done():
+            print(state)
             break;
 
         # 行動の取得
