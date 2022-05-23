@@ -69,23 +69,28 @@ class GameUI(tk.Frame):
         y = int(event.y / 80)
         action = x + int(y*4) + int(z*16)
 
-        # 合法手でない時
+        """
         print(self.state.legal_actions())
         print(x,y,z)
+        print(action)
+        """
+
+        # 合法手でない時
         if not (action in self.state.legal_actions()):
             return
 
-        print("OK!")
         # 次の状態の取得
         self.state = self.state.next(action)
         self.on_draw()
+
+        print(self.state)
 
         # AIのターン
         self.master.after(1, self.turn_of_ai)
 
     # AIのターン
     def turn_of_ai(self):
-        print("turn of ai")
+        #print("turn of ai")
 
         # ゲーム終了時
         if self.state.is_done():
@@ -110,9 +115,13 @@ class GameUI(tk.Frame):
         else:
             ps=1080
 
-
-        x = ps + 80 * int(index%16)%4 +10
-        y = int((index%16)/4)*80+10
+        x = ps + 80 * (index%4) + 10
+        y = int((index%16) / 4)*80 + 10
+        """
+        print("on draw------------------------------")
+        print(x)
+        print(y)
+        """
         if first_player:
             self.c.create_oval(x, y, x+60, y+60, width = 2.0, outline = '#FFFFFF', fill='#FFFFFF')
         else:
