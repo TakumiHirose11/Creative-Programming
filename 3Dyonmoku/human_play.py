@@ -36,9 +36,11 @@ class GameUI(tk.Frame):
 
     # 人間のターン
     def turn_of_human(self, event):
-        print("turn of human")
+        #print("turn of human")
         # ゲーム終了時
         if self.state.is_done():
+            print("END")
+            print(self.state)
             self.state = State()
             self.on_draw()
             return
