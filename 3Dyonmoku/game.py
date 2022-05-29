@@ -109,6 +109,79 @@ class State:
                 text+='\n'
         return text
 
+    """pv_mcts2用"""
+    def stop_reach(self,state):
+
+        def reach_count(x,y,z,dx,dy,dz):
+            count = 0
+            check_point = -1
+            for k in range(4):
+                if y<0 or 3<y or x<0 or 3<x or z<0 or z>3:
+                    return -1
+
+                if self.enemy_pieces[x + y*4 + z*16] == 1:
+                    count+=1
+                elif self.pieces[x + y*4 + z*16] == 1:
+                    return -1
+                else:
+                    check_point = x + y*4 + z*16
+
+                x,y,z=x+dx,y+dy,z+dz
+            
+            if count == 3 and check_point in state.legal_actions():
+                return check_point
+            else:
+                return -1
+        
+        #平面縦と横(x方向のみ、またはy方向のみ)
+        for i in range(4):
+            #高さで4つ
+            for z in range(4):
+                if reach_count(i,0,z,0,1,0)!=-1:
+                    return reach_count(i,0,z,0,1,0)   
+                if reach_count(0,i,z,1,0,0)!=-1:
+                    return reach_count(0,i,z,1,0,0)  
+
+        
+        #平面斜め（x,y方向）
+        for z in range(4):
+            if reach_count(0,0,z,1,1,0)!=-1:
+                return reach_count(0,0,z,1,1,0)
+            if reach_count(0,3,z,1,-1,0)!=-1:
+                return reach_count(0,3,z,1,-1,0)
+            
+        #立体縦と横
+        for i in range(4):
+            if reach_count(i,0,0,0,1,1)!=-1:
+                return reach_count(i,0,0,0,1,1)
+            if reach_count(i,3,0,0,-1,1)!=-1:
+                return reach_count(i,3,0,0,-1,1)
+            if reach_count(0,i,0,1,0,1)!=-1:
+                return reach_count(0,i,0,1,0,1)
+            if reach_count(3,i,0,-1,0,1)!=-1:
+                return reach_count(3,i,0,-1,0,1)
+
+        #立体斜め
+        if reach_count(0,0,0,1,1,1)!=-1:
+            return reach_count(0,0,0,1,1,1)
+        if reach_count(3,3,0,-1,-1,1)!=-1:
+            return reach_count(3,3,0,-1,-1,1)
+        if reach_count(0,3,0,1,-1,1)!=-1:
+            return reach_count(0,3,0,1,-1,1)
+        if reach_count(3,0,0,-1,1,1)!=-1:
+            return reach_count(3,0,0,-1,1,1)
+
+        #立体高さ（z方向のみ）
+        for x in range(4):
+            for y in range(4):
+                if reach_count(x, y, 0, 0, 0, 1)!=-1:
+                    return reach_count(x, y, 0, 0, 0, 1)
+            
+        return -1
+        
+
+        
+
 # ランダムで行動選択
 def random_action(state):
     legal_actions = state.legal_actions()
