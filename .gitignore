@@ -4,3 +4,4 @@ git/archive/*
 git/bad_archive/*
 git/archive2/*
 git/frontend/venv/*
+git/__pycache__
