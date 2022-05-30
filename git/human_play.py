@@ -39,11 +39,7 @@ class GameUI(tk.Frame):
         #print("turn of human")
         # ゲーム終了時
         if self.state.is_done():
-            print("------------------------------------")
-            if self.state.is_lose():
-                print("YOU LOSE")
-            else:
-                print("DRAW")
+            print("END")
             print(self.state)
             self.state = State()
             self.on_draw()
@@ -83,7 +79,6 @@ class GameUI(tk.Frame):
 
         # 合法手でない時
         if not (action in self.state.legal_actions()):
-            print("This action is illegal!")
             return
 
         # 次の状態の取得
@@ -101,23 +96,10 @@ class GameUI(tk.Frame):
 
         # ゲーム終了時
         if self.state.is_done():
-            print("------------------------------------")
-            if self.state.is_lose():
-                print("YOU WIN")
-            else:
-                print("DRAW")
-            print(self.state)
-            self.state = State()
-            self.on_draw()
             return
 
-        # 行動の取得        
-        if self.state.stop_reach(self.state)!=-1:
-            action = self.state.stop_reach(self.state)
-            #action = self.next_action(self.state)
-            print("stop reach!: ", action)
-        else:
-            action = self.next_action(self.state)
+        # 行動の取得
+        action = self.next_action(self.state)
 
         # 次の状態の取得
         self.state = self.state.next(action)

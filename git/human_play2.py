@@ -4,7 +4,7 @@
 
 # パッケージのインポート
 from game import State
-from pv_mcts import pv_mcts_action2
+from pv_mcts import pv_mcts_action
 from tensorflow.keras.models import load_model
 from pathlib import Path
 from threading import Thread
@@ -24,7 +24,7 @@ class GameUI(tk.Frame):
         self.state = State()
 
         # PV MCTSで行動選択を行う関数の生成
-        self.next_action = pv_mcts_action2(model, 0.0)
+        self.next_action = pv_mcts_action(model, 0.0)
 
         # キャンバスの生成
         self.c = tk.Canvas(self, width = 1400, height = 320, highlightthickness = 0)
@@ -39,7 +39,11 @@ class GameUI(tk.Frame):
         #print("turn of human")
         # ゲーム終了時
         if self.state.is_done():
-            print("END")
+            print("------------------------------------")
+            if self.state.is_lose():
+                print("YOU LOSE")
+            else:
+                print("DRAW")
             print(self.state)
             self.state = State()
             self.on_draw()
@@ -79,6 +83,7 @@ class GameUI(tk.Frame):
 
         # 合法手でない時
         if not (action in self.state.legal_actions()):
+            print("This action is illegal!")
             return
 
         # 次の状態の取得
@@ -96,10 +101,23 @@ class GameUI(tk.Frame):
 
         # ゲーム終了時
         if self.state.is_done():
+            print("------------------------------------")
+            if self.state.is_lose():
+                print("YOU WIN")
+            else:
+                print("DRAW")
+            print(self.state)
+            self.state = State()
+            self.on_draw()
             return
 
-        # 行動の取得
-        action = self.next_action(self.state)
+        # 行動の取得        
+        if self.state.stop_reach(self.state)!=-1:
+            action = self.state.stop_reach(self.state)
+            #action = self.next_action(self.state)
+            print("stop reach!: ", action)
+        else:
+            action = self.next_action(self.state)
 
         # 次の状態の取得
         self.state = self.state.next(action)
