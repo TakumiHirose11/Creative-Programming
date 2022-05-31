@@ -5,3 +5,6 @@ git/bad_archive/*
 git/archive2/*
 git/frontend/venv/*
 git/__pycache__
+git/archive(only_train)
+git/data
+git/data_archive
