@@ -17,11 +17,35 @@ from tensorflow.keras.models import load_model
 
 
 class Board(BoxLayout):
+    def __init__(self,*args, **kwargs):
+        super(Board,self).__init__(**kwargs)
     pass
 
 class Graph(BoxLayout):
     def __init__(self,*args, **kwargs):
         super(Graph,self).__init__(**kwargs)
+
+class Board_button(Button):
+    def __init__(self,*args, **kwargs):
+        super(Board_button,self).__init__(**kwargs)
+
+class Layer(BoxLayout):
+    def __init__(self,*args, **kwargs):
+        super(Layer,self).__init__(**kwargs)
+
+        layer = BoxLayout(orientation="vertical")
+        for _ in range(4):
+            l = BoxLayout(orientation="horizontal")
+            for __ in range(4):
+                l.add_widget(Board_button())
+            layer.add_widget(l)
+        
+        self.add_widget(layer)
+            
+class Log(BoxLayout):
+    def __init__(self,*args, **kwargs):
+        super(Log,self).__init__(**kwargs)
+
        
 
 class Game(BoxLayout):
@@ -37,7 +61,7 @@ class Game(BoxLayout):
 
         Right = BoxLayout(orientation = 'vertical',size_hint_x = 0.3)
         info = BoxLayout()
-        log = BoxLayout()
+        log = Log()
         Right.add_widget(info)
         Right.add_widget(log)
 

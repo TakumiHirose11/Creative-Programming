@@ -24,14 +24,25 @@ Root:
             app.root.gotoGame()
 
 <Board>:
-    padding: 10,10,10,10
-    Button:
-        text: 'this is board'
-    Button:
-        text: "back"
-        on_press:
-            app.root.gotoTitle()
+    Layer:
+    Layer:
+    Layer:
+    Layer:
+
+<Layer>:
+    padding:30,120,30,120
+
+<Board_button>:
+    size:20,20
 
 <Graph>:
     Button:
         text:"3D model"
+
+
+
+<Log>:
+    Button:
+        text: "back"
+        on_press:
+            app.root.gotoTitle()
