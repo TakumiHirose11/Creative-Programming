@@ -8,7 +8,7 @@ from kivy.uix.button import Button
 from kivy.uix.label import Label
 
 from kivy.config import Config
-Config.set('graphics', 'width', '1200')
+Config.set('graphics', 'width', '1500')
 Config.set('graphics', 'height', '800')
 
 from game import State
@@ -22,22 +22,20 @@ class Board(BoxLayout):
 class Graph(BoxLayout):
     def __init__(self,*args, **kwargs):
         super(Graph,self).__init__(**kwargs)
-        
-        l = Label(text="3Dmodel")
-        self.add_widget(l)
+       
 
 class Game(BoxLayout):
-
+    orientation = 'horizontal'
     def __init__(self,*args, **kwargs):
         super(Game,self).__init__(**kwargs)
 
-        Left = BoxLayout(orientation = 'vertical')
+        Left = BoxLayout(orientation = 'vertical',size_hint_x = 0.7)
         board = Board()
         graph = Graph()
         Left.add_widget(board)
         Left.add_widget(graph)
 
-        Right = BoxLayout(orientation = 'vertical')
+        Right = BoxLayout(orientation = 'vertical',size_hint_x = 0.3)
         info = BoxLayout()
         log = BoxLayout()
         Right.add_widget(info)
