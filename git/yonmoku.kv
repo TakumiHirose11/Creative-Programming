@@ -30,19 +30,17 @@ Root:
     Layer:
 
 <Layer>:
-    padding:30,120,30,120
+    padding:30,150,30,150
 
 <Board_button>:
     size:20,20
+    
 
 <Graph>:
     Button:
-        text:"3D model"
+        id:'A'
+        text:str(app.root.state)
 
+<TestButton@Button>:
+    on_press:app.root.gotoTitle()
 
-
-<Log>:
-    Button:
-        text: "back"
-        on_press:
-            app.root.gotoTitle()

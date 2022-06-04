@@ -1,3 +1,6 @@
+from cgitb import text
+from logging import root
+from telnetlib import TELNET_PORT
 from kivy.app import App
 from kivy.factory import Factory
 from kivy.uix.boxlayout import BoxLayout
@@ -6,6 +9,7 @@ from kivy.properties import ObjectProperty
 
 from kivy.uix.button import Button
 from kivy.uix.label import Label
+from kivy.properties import ListProperty
 
 from kivy.config import Config
 Config.set('graphics', 'width', '1500')
@@ -14,6 +18,8 @@ Config.set('graphics', 'height', '800')
 from game import State
 from pv_mcts import pv_mcts_action
 from tensorflow.keras.models import load_model
+
+model = load_model('./model/best.h5')
 
 
 class Board(BoxLayout):
@@ -41,10 +47,17 @@ class Layer(BoxLayout):
             layer.add_widget(l)
         
         self.add_widget(layer)
-            
+
+
+         
 class Log(BoxLayout):
     def __init__(self,*args, **kwargs):
         super(Log,self).__init__(**kwargs)
+        
+        b = TestButton(text="back")
+        self.add_widget(b)
+       
+                
 
        
 
@@ -72,6 +85,7 @@ class Game(BoxLayout):
 
 class Root(FloatLayout):
     state = State()
+    print(state)
 
     def gotoTitle(self):
         self.clear_widgets()
@@ -81,10 +95,16 @@ class Root(FloatLayout):
         self.clear_widgets()
         self.add_widget(Factory.Game())
 
+class TestButton(Button):
+   pass
+
+
 class YonmokuApp(App):
     title = "3D Yonmoku"
     def build(self):
-        self.root.gotoTitle()
+        #self.root.gotoTitle()
+        self.root.gotoGame()
+
 
 YonmokuApp().run()
 
