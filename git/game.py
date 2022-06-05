@@ -178,6 +178,19 @@ class State:
                     return reach_count(x, y, 0, 0, 0, 1)
             
         return -1
+    """for pv_mcts3"""
+    def finish(self,state):
+        enemy = self.enemy_pieces
+        me = self.pieces
+
+        self.enemy_pieces = me
+        self.pieces = enemy
+
+        res = self.stop_reach(state)
+
+        self.enemy_pieces = enemy
+        self.pieces = me
+        return res
         
 
         

@@ -25,7 +25,6 @@ model = load_model('./model/best.h5')
 class Board(BoxLayout):
     def __init__(self,*args, **kwargs):
         super(Board,self).__init__(**kwargs)
-    pass
 
 class Graph(BoxLayout):
     def __init__(self,*args, **kwargs):

@@ -54,8 +54,14 @@ def play(model):
         #print(scores)
         #print(len(scores))
 
-        """stop reach"""
-        if state.stop_reach(state)!=-1:
+        if state.finish(state)!=-1:
+            tmp = state.finish(state)
+            scores = np.zeros(len(scores))
+            scores[tmp] = 1
+            action = tmp
+
+
+        elif state.stop_reach(state)!=-1:
             tmp = state.stop_reach(state)
             scores = np.zeros(len(scores))
             scores[tmp] = 1
